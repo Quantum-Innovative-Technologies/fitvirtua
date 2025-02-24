@@ -9,7 +9,7 @@ import NewsletterSection from "@/components/newsletter-section"
 import Footer from "@/components/footer"
 import CartSidebar from "@/components/cart-sidebar"
 import NotificationToast from "@/components/notification-toast"
-import { CartItem } from "@/types"
+import { CartItem, Product } from "@/types"
 
 export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -69,7 +69,7 @@ export default function Home() {
     },
   ]
 
-  const addToCart = (product: CartItem) => {
+  const addToCart = (product: Product) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
       if (existingItem) {

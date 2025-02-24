@@ -21,7 +21,7 @@ export default function Header({ onCartClick, cartItemsCount }: HeaderProps) {
               <a href="#" className="text-gray-800 hover:text-gray-600">
                 Shop
               </a>
-              <a href="#" className="text-gray-800 hover:text-gray-600">
+              <a href="/virtual" className="text-gray-800 hover:text-gray-600">
                 Virtual Try-On
               </a>
               <a href="#" className="text-gray-800 hover:text-gray-600">
