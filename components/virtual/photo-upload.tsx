@@ -67,18 +67,18 @@ export default function PhotoUpload({ onPhotoUpload, webcamRef, stream, setStrea
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-purple-50 rounded-lg shadow-lg p-6 mb-6">
+    <div className="bg-gradient-to-br from-white to-purple-50 dark:from-gray-800 dark:to-purple-900/20 rounded-lg shadow-lg p-6 mb-6">
       <div className="flex justify-center gap-4 mb-4">
         <button 
           onClick={() => fileInputRef.current?.click()}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-full hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
+          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 text-white px-6 py-2 rounded-full hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-600 dark:hover:to-indigo-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
         >
           <Image className="text-xl text-blue-200" />
           Upload Photo
         </button>
         <button 
           onClick={startWebcam}
-          className="flex items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white px-6 py-2 rounded-full hover:from-rose-600 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
+          className="flex items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-600 dark:from-rose-400 dark:to-pink-500 text-white px-6 py-2 rounded-full hover:from-rose-600 hover:to-pink-700 dark:hover:from-rose-500 dark:hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
         >
           <Camera className="text-xl text-pink-200" />
           Use Webcam
@@ -87,7 +87,9 @@ export default function PhotoUpload({ onPhotoUpload, webcamRef, stream, setStrea
 
       <div 
         className={`border-3 border-dashed rounded-lg p-6 text-center transition-all duration-300 ${
-          isDragging ? 'border-primary bg-purple-50' : 'border-gray-300 hover:border-primary hover:bg-purple-50'
+          isDragging 
+            ? 'border-primary bg-purple-50 dark:bg-purple-900/30' 
+            : 'border-gray-300 dark:border-gray-600 hover:border-primary dark:hover:border-primary hover:bg-purple-50 dark:hover:bg-purple-900/30'
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -95,10 +97,10 @@ export default function PhotoUpload({ onPhotoUpload, webcamRef, stream, setStrea
       >
         <div className="max-w-md mx-auto">
           <div className="mb-4 relative">
-            <UploadCloud className="mx-auto text-primary text-4xl" />
+            <UploadCloud className="mx-auto text-primary dark:text-blue-400 text-4xl" />
           </div>
-          <h3 className="text-sm font-medium mb-1 text-gray-700">Drop your photo here</h3>
-          <p className="text-xs text-gray-500 mb-2">or use the buttons above</p>
+          <h3 className="text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Drop your photo here</h3>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">or use the buttons above</p>
           <input 
             type="file" 
             ref={fileInputRef}
@@ -111,8 +113,8 @@ export default function PhotoUpload({ onPhotoUpload, webcamRef, stream, setStrea
             className={`mx-auto max-w-full h-auto rounded-lg shadow-lg ${stream ? '' : 'hidden'}`}
           />
           <div className="flex items-center justify-center gap-1 mt-2">
-            <Image className="text-gray-400 text-xs" />
-            <p className="text-xs text-gray-400">Supported formats: JPG, PNG, HEIC</p>
+            <Image className="text-gray-400 dark:text-gray-500 text-xs" />
+            <p className="text-xs text-gray-400 dark:text-gray-500">Supported formats: JPG, PNG, HEIC</p>
           </div>
         </div>
       </div>

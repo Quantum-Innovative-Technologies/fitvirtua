@@ -87,7 +87,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       <Header onCartClick={() => setIsCartOpen(true)} cartItemsCount={cartItems.length} />
       <HeroSection />
       <CollectionsSection collections={collections} />

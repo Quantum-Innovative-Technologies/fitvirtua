@@ -37,7 +37,7 @@ export default function VirtualTryOn() {
       />
 
       {/* Main content area with padding to avoid overlap */}
-      <div className="flex flex-1 pt-20">  
+      <div className="flex flex-1 pt-20 bg-white dark:bg-gray-900">  
         <Sidebar onMeasurementsChange={(measurements) => {
           if (previewPhoto) {
             // Update preview with new measurements
@@ -50,7 +50,7 @@ export default function VirtualTryOn() {
             <div className="flex justify-end mb-4">
               <button 
                 onClick={() => setShowInstructions(true)}
-                className="flex items-center px-4 py-2 space-x-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg transition-all"
+                className="flex items-center px-4 py-2 space-x-2 text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-lg transition-all"
               >
                 <HelpCircle className="w-6 h-6" />
                 <span className="text-lg font-medium">How it works</span>
