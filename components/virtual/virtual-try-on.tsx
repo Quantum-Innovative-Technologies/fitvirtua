@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Sidebar from './sidebar';
 import PhotoUpload from './photo-upload';
 import PreviewSection from './preview-section';
@@ -18,6 +18,18 @@ export default function VirtualTryOn() {
   const [showTryOnModal, setShowTryOnModal] = useState(false);
   const webcamRef = useRef<HTMLVideoElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
+
+  // Cleanup webcam on unmount
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        if (webcamRef.current) {
+          webcamRef.current.srcObject = null;
+        }
+      }
+    };
+  }, [stream]);
 
   const handlePhotoUpload = (photoUrl: string) => {
     setPhoto(photoUrl);
