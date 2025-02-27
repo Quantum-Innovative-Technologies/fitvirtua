@@ -19,14 +19,21 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     // Check if coming from Tailor's Corner
     const from = searchParams.get('from');
     if (from === 'tailors-corner') {
       setActiveTab('tailor');
     }
-  }, [searchParams]);
+  }, [searchParams, mounted]);
 
   const handleLogin = useCallback((e: React.FormEvent) => {
     e.preventDefault();
@@ -46,13 +53,19 @@ const Login: React.FC = () => {
     console.log("Google login clicked");
   }, []);
 
+  // Prevent hydration issues
+  if (!mounted) {
+    return null;
+  }
+
   return (
-    <div className="min-h-screen pt-20 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen pt-20 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors">
       <div className="max-w-6xl w-full space-y-8 flex gap-8">
         {/* Theme Toggle Button */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           className="fixed top-4 right-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          aria-label="Toggle theme"
         >
           {theme === 'dark' ? (
             <i className="fas fa-sun text-yellow-500"></i>
@@ -63,28 +76,28 @@ const Login: React.FC = () => {
         {/* Background Image */}
         <div className="hidden lg:block w-1/2">
           <img
-            src="https://public.readdy.ai/ai/img_res/3853ee2bb8728540cdb9413c95b839b7.jpg"
+            src="../LoginTailor.jpg"
             alt="Fashion Studio"
             className="w-full h-full object-cover rounded-xl"
           />
         </div>
         {/* Login Container */}
-        <div className="w-full lg:w-1/2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-8 rounded-xl shadow-lg">
+        <div className="w-full lg:w-1/2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-8 rounded-xl shadow-lg transition-colors">
           {/* Logo */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
               FitVirtua
             </h1>
-            <p className="text-gray-600 dark:text-gray-300">Your Virtual Fitting Room</p>
+            <p className="text-gray-600 dark:text-gray-300 transition-colors">Your Virtual Fitting Room</p>
           </div>
           {/* Tab Switcher */}
-          <div className="flex mb-8 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+          <div className="flex mb-8 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg transition-colors">
             <button
               onClick={() => setActiveTab("tailor")}
               className={`flex-1 py-2 px-4 rounded-lg transition-all duration-200 ${
                 activeTab === "tailor"
                   ? "bg-white dark:bg-gray-600 shadow-sm text-gray-900 dark:text-white"
-                  : "text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
               } !rounded-button whitespace-nowrap`}
             >
               Tailor Login
@@ -94,7 +107,7 @@ const Login: React.FC = () => {
               className={`flex-1 py-2 px-4 rounded-lg transition-all duration-200 ${
                 activeTab === "user"
                   ? "bg-white dark:bg-gray-600 shadow-sm text-gray-900 dark:text-white"
-                  : "text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
               } !rounded-button whitespace-nowrap`}
             >
               Customer Login
@@ -103,14 +116,14 @@ const Login: React.FC = () => {
           {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-6">
             {errorMessage && (
-              <div className="bg-red-50 dark:bg-red-900/50 text-red-500 dark:text-red-300 p-3 rounded-lg text-sm">
+              <div className="bg-red-50 dark:bg-red-900/50 text-red-500 dark:text-red-300 p-3 rounded-lg text-sm transition-colors">
                 {errorMessage}
               </div>
             )}
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors"
               >
                 Email Address
               </label>
@@ -120,16 +133,16 @@ const Login: React.FC = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm dark:text-white"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                   placeholder="Enter your email"
                 />
-                <i className="fas fa-envelope absolute right-3 top-2.5 text-gray-400 dark:text-gray-500"></i>
+                <i className="fas fa-envelope absolute right-3 top-2.5 text-gray-400 dark:text-gray-500 transition-colors"></i>
               </div>
             </div>
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors"
               >
                 Password
               </label>
@@ -139,13 +152,13 @@ const Login: React.FC = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm dark:text-white"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                   placeholder="Enter your password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 !rounded-button whitespace-nowrap"
+                  className="absolute right-3 top-2.5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors !rounded-button whitespace-nowrap"
                 >
                   <i
                     className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
@@ -160,18 +173,18 @@ const Login: React.FC = () => {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 rounded"
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 rounded transition-colors"
                 />
                 <label
                   htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-700 dark:text-gray-200"
+                  className="ml-2 block text-sm text-gray-700 dark:text-gray-200 transition-colors"
                 >
                   Remember me
                 </label>
               </div>
               <button
                 type="button"
-                className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 !rounded-button whitespace-nowrap"
+                className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors !rounded-button whitespace-nowrap"
               >
                 Forgot password?
               </button>
@@ -189,10 +202,10 @@ const Login: React.FC = () => {
             </button>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                <div className="w-full border-t border-gray-300 dark:border-gray-600 transition-colors"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors">
                   Or continue with
                 </span>
               </div>
@@ -200,17 +213,17 @@ const Login: React.FC = () => {
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 !rounded-button whitespace-nowrap"
+              className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors !rounded-button whitespace-nowrap"
             >
               <i className="fab fa-google mr-2"></i>
               Sign in with Google
             </button>
             <div className="text-center text-sm">
-              <span className="text-gray-600 dark:text-gray-300">Don't have an account? </span>
+              <span className="text-gray-600 dark:text-gray-300 transition-colors">Don't have an account? </span>
               <button
                 type="button"
                 onClick={() => setIsSignUp(true)}
-                className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 !rounded-button whitespace-nowrap"
+                className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors !rounded-button whitespace-nowrap"
               >
                 Sign up
               </button>
@@ -219,7 +232,7 @@ const Login: React.FC = () => {
           {/* Sign Up Modal */}
           {isSignUp && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto transition-colors">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                     Create {activeTab === "tailor" ? "Tailor" : "Customer"}{" "}
@@ -227,7 +240,7 @@ const Login: React.FC = () => {
                   </h2>
                   <button
                     onClick={() => setIsSignUp(false)}
-                    className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 !rounded-button whitespace-nowrap"
+                    className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors !rounded-button whitespace-nowrap"
                   >
                     <i className="fas fa-times"></i>
                   </button>
@@ -242,7 +255,7 @@ const Login: React.FC = () => {
                     <div>
                       <label
                         htmlFor="firstName"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors"
                       >
                         First Name
                       </label>
@@ -251,14 +264,14 @@ const Login: React.FC = () => {
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50"
+                        className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                         placeholder="Enter first name"
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="lastName"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors"
                       >
                         Last Name
                       </label>
@@ -267,7 +280,7 @@ const Login: React.FC = () => {
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
-                        className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50"
+                        className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                         placeholder="Enter last name"
                       />
                     </div>
@@ -275,35 +288,35 @@ const Login: React.FC = () => {
                   <div>
                     <label
                       htmlFor="signupEmail"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors"
                     >
                       Email Address
                     </label>
                     <input
                       id="signupEmail"
                       type="email"
-                      className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50"
+                      className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                       placeholder="Enter your email"
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="signupPassword"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors"
                     >
                       Password
                     </label>
                     <input
                       id="signupPassword"
                       type="password"
-                      className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50"
+                      className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                       placeholder="Create password"
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="confirmPassword"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors"
                     >
                       Confirm Password
                     </label>
@@ -312,7 +325,7 @@ const Login: React.FC = () => {
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50"
+                      className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                       placeholder="Confirm password"
                     />
                   </div>
@@ -322,11 +335,11 @@ const Login: React.FC = () => {
                   >
                     Create Account
                   </button>
-                  <div className="text-center text-sm text-gray-600 dark:text-gray-300">
+                  <div className="text-center text-sm text-gray-600 dark:text-gray-300 transition-colors">
                     Already have an account?{" "}
                     <button
                       onClick={() => setIsSignUp(false)}
-                      className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 !rounded-button whitespace-nowrap"
+                      className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors !rounded-button whitespace-nowrap"
                     >
                       Sign In
                     </button>
