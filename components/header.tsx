@@ -47,12 +47,19 @@ export default function Header({ onCartClick, cartItemsCount }: HeaderProps) {
               <Link href="/size-guide" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400">
                 Size Guide
               </Link>
-              <Link href="/tailors-corner" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400">
+              <Link href="/login?from=tailors-corner" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400">
                 Tailor's Corner
               </Link>
             </nav>
           </div>
           <div className="flex items-center space-x-6">
+            <Link 
+              href="/login" 
+              className="flex items-center space-x-2 text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <User className="w-5 h-5" />
+              <span>Login</span>
+            </Link>
             <div className="relative">
               <input
                 type="text"
@@ -67,9 +74,6 @@ export default function Header({ onCartClick, cartItemsCount }: HeaderProps) {
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            <button className="text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400">
-              <User className="w-6 h-6" />
             </button>
             <button className="text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 relative" onClick={onCartClick}>
               <ShoppingBag className="w-6 h-6" />
