@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Providers } from './providers'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Your virtual wardrobe, tailored to your every move.',
 }
 
-export default function RootLayout({
+function RootLayout({
   children,
 }: {
   children: React.ReactNode
@@ -14,8 +15,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )
 }
+
+export default RootLayout

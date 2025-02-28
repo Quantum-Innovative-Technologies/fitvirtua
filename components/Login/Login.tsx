@@ -35,23 +35,94 @@ const Login: React.FC = () => {
     }
   }, [searchParams, mounted]);
 
-  const handleLogin = useCallback((e: React.FormEvent) => {
+  const handleLogin = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage("");
-    // Simulating API call
-    setTimeout(() => {
-      setIsLoading(false);
-      if (!email || !password) {
-        setErrorMessage("Please fill in all fields");
+    
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          userType: activeTab
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed');
       }
-    }, 1000);
-  }, [email, password]);
+
+      // Store user data in localStorage
+      localStorage.setItem('user', JSON.stringify({ ...data.user, userType: activeTab }));
+
+      // Redirect based on user type
+      if (activeTab === 'tailor') {
+        router.push('/tailor-dashboard');
+      } else {
+        router.push('/customer-dashboard');
+      }
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Login failed');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [email, password, activeTab, router]);
 
   const handleGoogleLogin = useCallback(() => {
     // Implement Google authentication
     console.log("Google login clicked");
   }, []);
+
+  const handleSignUp = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrorMessage("");
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          firstName,
+          lastName,
+          userType: activeTab
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed');
+      }
+
+      // Switch to login mode after successful registration
+      setIsSignUp(false);
+      setErrorMessage("");
+      setPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Registration failed');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [email, password, confirmPassword, firstName, lastName, activeTab]);
 
   // Prevent hydration issues
   if (!mounted) {
@@ -246,9 +317,7 @@ const Login: React.FC = () => {
                   </button>
                 </div>
                 <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                  }}
+                  onSubmit={handleSignUp}
                   className="space-y-4"
                 >
                   <div className="grid grid-cols-2 gap-4">
@@ -295,6 +364,8 @@ const Login: React.FC = () => {
                     <input
                       id="signupEmail"
                       type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                       placeholder="Enter your email"
                     />
@@ -309,6 +380,8 @@ const Login: React.FC = () => {
                     <input
                       id="signupPassword"
                       type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm bg-white/50 dark:bg-gray-700/50 dark:text-white transition-colors"
                       placeholder="Create password"
                     />
