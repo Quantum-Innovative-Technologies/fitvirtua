@@ -20,7 +20,7 @@ const App: React.FC = () => {
       id: 1,
       name: "Classic Tailored Suit",
       price: 599.99,
-      image: "https://public.readdy.ai/ai/img_res/a2e2c7f9d6c2e6f0a8b4c6d8e0f2a4c6.jpg",
+      image: "./Trysuit.jpg",
       category: "Suits",
       description: "Elegant black wool suit with modern fit"
     },
@@ -28,7 +28,7 @@ const App: React.FC = () => {
       id: 2,
       name: "Italian Dress Shirt",
       price: 129.99,
-      image: "https://public.readdy.ai/ai/img_res/b3f3d8f0e7d3f7g1b9c5d7e9g3b5d7.jpg",
+      image: "./TryShirt.jpg",
       category: "Shirts",
       description: "Premium cotton dress shirt in white"
     },
@@ -36,7 +36,7 @@ const App: React.FC = () => {
       id: 3,
       name: "Designer Blazer",
       price: 349.99,
-      image: "https://public.readdy.ai/ai/img_res/c4g4e9g1f8e4g8h2a0d6e8f0h4c6e8.jpg",
+      image: "./Men.jpg",
       category: "Blazers",
       description: "Navy blue blazer with slim fit"
     },
@@ -45,7 +45,7 @@ const App: React.FC = () => {
       name: "Premium Cotton T-Shirt",
       price: 29.99,
       image:
-        "https://public.readdy.ai/ai/img_res/69978d9663d3534e9e3e3834dd819640.jpg",
+        "./Tshirtcotton.jpg",
       category: "T-Shirts",
       description: "Elegant black wool suit with modern fit"
     },
@@ -54,7 +54,7 @@ const App: React.FC = () => {
       name: "Elegant Summer Dress",
       price: 89.99,
       image:
-        "https://public.readdy.ai/ai/img_res/63a197b87b33104c2b6b2856af0cca6f.jpg",
+        "./Trysuit.jpg",
       category: "Dresses",
       description: "Premium cotton dress shirt in white"
     },
@@ -63,7 +63,7 @@ const App: React.FC = () => {
       name: "Classic Denim Jeans",
       price: 79.99,
       image:
-        "https://public.readdy.ai/ai/img_res/2f508b63a969e496ad04ddc97e9f7e12.jpg",
+        "./jeans.jpg",
       category: "Jeans",
       description: "Navy blue blazer with slim fit"
     },
@@ -72,7 +72,7 @@ const App: React.FC = () => {
       name: "Kids Cotton Pants",
       price: 24.99,
       image:
-        "https://public.readdy.ai/ai/img_res/0cce4b979345d24ca30435e0612cdfe7.jpg",
+        "./cotton pants.jpg",
       category: "Kids",
       description: "Elegant black wool suit with modern fit"
     },
@@ -81,7 +81,7 @@ const App: React.FC = () => {
       name: "Wool Blend Sweater",
       price: 69.99,
       image:
-        "https://public.readdy.ai/ai/img_res/f86da1373d60d83aa005ca7931dc9559.jpg",
+        "./wool.jpg",
       category: "Sweaters",
       description: "Premium cotton dress shirt in white"
     },
@@ -90,7 +90,7 @@ const App: React.FC = () => {
       name: "Linen Dress Shirt",
       price: 119.99,
       image:
-        "https://public.readdy.ai/ai/img_res/40368069ecf292eb73746c44c0ad3b66.jpg",
+        "./Tryshirt.jpg",
       category: "Shirts",
       description: "Navy blue blazer with slim fit"
     },
@@ -99,7 +99,7 @@ const App: React.FC = () => {
       name: "Silk Evening Gown",
       price: 149.99,
       image:
-        "https://public.readdy.ai/ai/img_res/4f06df59dcb3afe603c202bf10a8f0ac.jpg",
+        "./gouwn.jpg",
       category: "Dresses",
       description: "Elegant black wool suit with modern fit"
     },
@@ -108,7 +108,7 @@ const App: React.FC = () => {
       name: "Kids Cotton Hoodie",
       price: 39.99,
       image:
-        "https://public.readdy.ai/ai/img_res/e4a7b6cc837816b902a3b6a4d25cff6a.jpg",
+        "./hood.jpg",
       category: "Kids",
       description: "Premium cotton dress shirt in white"
     },
