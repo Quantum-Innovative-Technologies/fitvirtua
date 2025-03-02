@@ -49,7 +49,7 @@ const Login: React.FC = () => {
         body: JSON.stringify({
           email,
           password,
-          userType: activeTab
+          userType: activeTab === 'tailor' ? 'tailor' : 'customer'
         }),
       });
 
@@ -60,13 +60,13 @@ const Login: React.FC = () => {
       }
 
       // Store user data in localStorage
-      localStorage.setItem('user', JSON.stringify({ ...data.user, userType: activeTab }));
+      localStorage.setItem('user', JSON.stringify(data.user));
 
       // Redirect based on user type
       if (activeTab === 'tailor') {
-        router.push('/tailor-dashboard');
+        router.push('/dashboard/tailor');
       } else {
-        router.push('/customer-dashboard');
+        router.push('/dashboard/customer');
       }
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Login failed');
@@ -102,7 +102,7 @@ const Login: React.FC = () => {
           password,
           firstName,
           lastName,
-          userType: activeTab
+          userType: activeTab === 'tailor' ? 'tailor' : 'customer'
         }),
       });
 

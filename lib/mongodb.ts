@@ -1,39 +1,37 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, MongoClientOptions } from 'mongodb';
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Please add your Mongo URI to .env.local');
 }
 
 const uri = process.env.MONGODB_URI;
-const options = {};
-
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
-if (process.env.NODE_ENV === 'development') {
-  // In development mode, use a global variable so that the value
-  // is preserved across module reloads caused by HMR (Hot Module Replacement).
-  let globalWithMongo = global as typeof globalThis & {
-    _mongoClientPromise?: Promise<MongoClient>;
-  };
+declare global {
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
+}
 
-  if (!globalWithMongo._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
+if (process.env.NODE_ENV === 'development') {
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri);
+    global._mongoClientPromise = client.connect();
   }
-  clientPromise = globalWithMongo._mongoClientPromise;
+  clientPromise = global._mongoClientPromise;
 } else {
-  // In production mode, it's best to not use a global variable.
-  client = new MongoClient(uri, options);
+  client = new MongoClient(uri);
   clientPromise = client.connect();
 }
 
 export async function connect() {
-  const client = await clientPromise;
-  const db = client.db("quantum");
-  return { db, client };
+  try {
+    const client = await clientPromise;
+    const db = client.db('quantum'); // Use the database name from your connection string
+    return { client, db };
+  } catch (error) {
+    console.error('Failed to connect to MongoDB:', error);
+    throw new Error('Database connection failed. Please try again later.');
+  }
 }
 
-// Export a module-scoped MongoClient promise. By doing this in a
-// separate module, the client can be shared across functions.
 export default clientPromise;
